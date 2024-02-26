@@ -629,7 +629,7 @@ func (c *Conn) handleSubscribe(f *frame.Frame) error {
 		return subscriptionExists
 	}
 
-	sub = newSubscription(c, dest, id, ack)
+	sub = NewSubscription(c, dest, id, ack)
 	c.subs[id] = sub
 
 	// send information about new subscription to upper layer

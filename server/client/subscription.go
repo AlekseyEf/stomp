@@ -14,7 +14,7 @@ type Subscription struct {
 	frame   *frame.Frame      // message allocated to subscription
 }
 
-func newSubscription(c *Conn, dest string, id string, ack string) *Subscription {
+func NewSubscription(c *Conn, dest string, id string, ack string) *Subscription {
 	return &Subscription{
 		conn: c,
 		dest: dest,
