@@ -572,7 +572,7 @@ func (c *Conn) handleBegin(f *frame.Frame) error {
 
 		return c.txStore.Begin(transaction)
 	}
-	return missingHeader(frame.Transaction)
+	return MissingHeaderError(frame.Transaction)
 }
 
 func (c *Conn) handleCommit(f *frame.Frame) error {
@@ -591,7 +591,7 @@ func (c *Conn) handleCommit(f *frame.Frame) error {
 			return c.stateFunc(c, f)
 		})
 	}
-	return missingHeader(frame.Transaction)
+	return MissingHeaderError(frame.Transaction)
 }
 
 func (c *Conn) handleAbort(f *frame.Frame) error {
@@ -605,18 +605,18 @@ func (c *Conn) handleAbort(f *frame.Frame) error {
 		}
 		return c.txStore.Abort(transaction)
 	}
-	return missingHeader(frame.Transaction)
+	return MissingHeaderError(frame.Transaction)
 }
 
 func (c *Conn) handleSubscribe(f *frame.Frame) error {
 	id, ok := f.Header.Contains(frame.Id)
 	if !ok {
-		return missingHeader(frame.Id)
+		return MissingHeaderError(frame.Id)
 	}
 
 	dest, ok := f.Header.Contains(frame.Destination)
 	if !ok {
-		return missingHeader(frame.Destination)
+		return MissingHeaderError(frame.Destination)
 	}
 
 	ack, ok := f.Header.Contains(frame.Ack)
@@ -640,7 +640,7 @@ func (c *Conn) handleSubscribe(f *frame.Frame) error {
 func (c *Conn) handleUnsubscribe(f *frame.Frame) error {
 	id, ok := f.Header.Contains(frame.Id)
 	if !ok {
-		return missingHeader(frame.Id)
+		return MissingHeaderError(frame.Id)
 	}
 
 	sub, ok := c.subs[id]
@@ -663,7 +663,7 @@ func (c *Conn) handleAck(f *frame.Frame) error {
 	if ack, ok := f.Header.Contains(frame.Ack); ok {
 		msgId = ack
 	} else if msgId, ok = f.Header.Contains(frame.MessageId); !ok {
-		return missingHeader(frame.MessageId)
+		return MissingHeaderError(frame.MessageId)
 	}
 
 	// expecting message id to be a uint64
@@ -706,7 +706,7 @@ func (c *Conn) handleNack(f *frame.Frame) error {
 	if ack, ok := f.Header.Contains(frame.Ack); ok {
 		msgId = ack
 	} else if msgId, ok = f.Header.Contains(frame.MessageId); !ok {
-		return missingHeader(frame.MessageId)
+		return MissingHeaderError(frame.MessageId)
 	}
 
 	// expecting message id to be a uint64

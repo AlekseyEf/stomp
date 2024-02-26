@@ -73,7 +73,7 @@ func DetermineVersion(f *frame.Frame) (version stomp.Version, err error) {
 			version = stomp.V10
 			err = nil
 		} else {
-			err = missingHeader(frame.AcceptVersion)
+			err = MissingHeaderError(frame.AcceptVersion)
 		}
 	}
 	return

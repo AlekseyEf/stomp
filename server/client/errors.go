@@ -26,6 +26,6 @@ var (
 	ErrInvalidHeaderValue       = errors.New("invalid header value")
 )
 
-func missingHeader(name string) error {
+func MissingHeaderError(name string) error {
 	return fmt.Errorf("missing header: " + name)
 }

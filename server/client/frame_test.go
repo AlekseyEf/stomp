@@ -22,7 +22,7 @@ func (s *FrameSuite) TestDetermineVersion_V10_Stomp(c *C) {
 	// have an accept-version header
 	f := frame.New(frame.STOMP)
 	_, err := DetermineVersion(f)
-	c.Check(err, Equals, missingHeader(frame.AcceptVersion))
+	c.Check(err, Equals, MissingHeaderError(frame.AcceptVersion))
 }
 
 func (s *FrameSuite) TestDetermineVersion_V11_Connect(c *C) {
