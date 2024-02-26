@@ -16,7 +16,7 @@ func (s *TxStoreSuite) TestDoubleBegin(c *C) {
 	c.Assert(err, IsNil)
 
 	err = txs.Begin("tx1")
-	c.Assert(err, Equals, txAlreadyInProgress)
+	c.Assert(err, Equals, ErrTxAlreadyInProgress)
 }
 
 func (s *TxStoreSuite) TestSuccessfulTx(c *C) {
@@ -77,5 +77,5 @@ func (s *TxStoreSuite) TestSuccessfulTx(c *C) {
 		c.Fatal("should not be called")
 		return nil
 	})
-	c.Check(err, Equals, txUnknown)
+	c.Check(err, Equals, ErrTxUnknown)
 }

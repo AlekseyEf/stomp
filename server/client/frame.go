@@ -40,12 +40,12 @@ func DetermineVersion(f *frame.Frame) (version stomp.Version, err error) {
 	isConnect := f.Command == frame.CONNECT
 
 	if !isConnect && f.Command != frame.STOMP {
-		err = notConnectFrame
+		err = ErrNotConnectFrame
 		return
 	}
 
 	// start with an error, and remove if successful
-	err = unknownVersion
+	err = ErrUnknownVersion
 
 	if acceptVersion, ok := f.Header.Contains(frame.AcceptVersion); ok {
 		// sort the versions so that the latest version comes last
@@ -92,12 +92,12 @@ func GetHeartBeat(f *frame.Frame) (cx, cy int, err error) {
 	if f.Command != frame.CONNECT &&
 		f.Command != frame.STOMP &&
 		f.Command != frame.CONNECTED {
-		err = invalidOperationForFrame
+		err = ErrInvalidOperationForFrame
 		return
 	}
 	if heartBeat, ok := f.Header.Contains(frame.HeartBeat); ok {
 		if !heartBeatRegexp.MatchString(heartBeat) {
-			err = invalidHeartBeat
+			err = ErrInvalidHeartBeat
 			return
 		}
 

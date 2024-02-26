@@ -9,9 +9,9 @@ type SubscriptionListSuite struct{}
 var _ = Suite(&SubscriptionListSuite{})
 
 func (s *SubscriptionListSuite) TestAddAndGet(c *C) {
-	sub1 := newSubscription(nil, "/dest", "1", "client")
-	sub2 := newSubscription(nil, "/dest", "2", "client")
-	sub3 := newSubscription(nil, "/dest", "3", "client")
+	sub1 := NewSubscription(nil, "/dest", "1", "client")
+	sub2 := NewSubscription(nil, "/dest", "2", "client")
+	sub3 := NewSubscription(nil, "/dest", "3", "client")
 
 	sl := NewSubscriptionList()
 	sl.Add(sub1)
@@ -31,9 +31,9 @@ func (s *SubscriptionListSuite) TestAddAndGet(c *C) {
 }
 
 func (s *SubscriptionListSuite) TestAddAndRemove(c *C) {
-	sub1 := newSubscription(nil, "/dest", "1", "client")
-	sub2 := newSubscription(nil, "/dest", "2", "client")
-	sub3 := newSubscription(nil, "/dest", "3", "client")
+	sub1 := NewSubscription(nil, "/dest", "1", "client")
+	sub2 := NewSubscription(nil, "/dest", "2", "client")
+	sub3 := NewSubscription(nil, "/dest", "3", "client")
 
 	sl := NewSubscriptionList()
 	sl.Add(sub1)

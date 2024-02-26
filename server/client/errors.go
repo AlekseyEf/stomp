@@ -1,36 +1,31 @@
 package client
 
-const (
-	notConnected             = errorMessage("expected CONNECT or STOMP frame")
-	unexpectedCommand        = errorMessage("unexpected frame command")
-	unknownCommand           = errorMessage("unknown command")
-	receiptInConnect         = errorMessage("receipt header prohibited in CONNECT or STOMP frame")
-	authenticationFailed     = errorMessage("authentication failed")
-	txAlreadyInProgress      = errorMessage("transaction already in progress")
-	txUnknown                = errorMessage("unknown transaction")
-	unsupportedVersion       = errorMessage("unsupported version")
-	subscriptionExists       = errorMessage("subscription already exists")
-	subscriptionNotFound     = errorMessage("subscription not found")
-	invalidFrameFormat       = errorMessage("invalid frame format")
-	invalidCommand           = errorMessage("invalid command")
-	unknownVersion           = errorMessage("incompatible version")
-	notConnectFrame          = errorMessage("operation valid for STOMP and CONNECT frames only")
-	invalidHeartBeat         = errorMessage("invalid format for heart-beat")
-	invalidOperationForFrame = errorMessage("invalid operation for frame")
-	exceededMaxFrameSize     = errorMessage("exceeded max frame size")
-	invalidHeaderValue       = errorMessage("invalid header value")
+import (
+	"errors"
+	"fmt"
 )
 
-type errorMessage string
+var (
+	ErrNotConnected             = errors.New("expected CONNECT or STOMP frame")
+	ErrUnexpectedCommand        = errors.New("unexpected frame command")
+	ErrUnknownCommand           = errors.New("unknown command")
+	ErrReceiptInConnect         = errors.New("receipt header prohibited in CONNECT or STOMP frame")
+	ErrAuthenticationFailed     = errors.New("authentication failed")
+	ErrTxAlreadyInProgress      = errors.New("transaction already in progress")
+	ErrTxUnknown                = errors.New("unknown transaction")
+	ErrUnsupportedVersion       = errors.New("unsupported version")
+	ErrSubscriptionExists       = errors.New("subscription already exists")
+	ErrSubscriptionNotFound     = errors.New("subscription not found")
+	ErrInvalidFrameFormat       = errors.New("invalid frame format")
+	ErrInvalidCommand           = errors.New("invalid command")
+	ErrUnknownVersion           = errors.New("incompatible version")
+	ErrNotConnectFrame          = errors.New("operation valid for STOMP and CONNECT frames only")
+	ErrInvalidHeartBeat         = errors.New("invalid format for heart-beat")
+	ErrInvalidOperationForFrame = errors.New("invalid operation for frame")
+	ErrExceededMaxFrameSize     = errors.New("exceeded max frame size")
+	ErrInvalidHeaderValue       = errors.New("invalid header value")
+)
 
-func (e errorMessage) Error() string {
-	return string(e)
-}
-
-func missingHeader(name string) errorMessage {
-	return errorMessage("missing header: " + name)
-}
-
-func prohibitedHeader(name string) errorMessage {
-	return errorMessage("prohibited header: " + name)
+func missingHeader(name string) error {
+	return fmt.Errorf("missing header: " + name)
 }

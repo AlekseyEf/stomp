@@ -21,7 +21,7 @@ func (txs *txStore) Begin(tx string) error {
 	}
 
 	if _, ok := txs.transactions[tx]; ok {
-		return txAlreadyInProgress
+		return ErrTxAlreadyInProgress
 	}
 
 	txs.transactions[tx] = list.New()
@@ -34,7 +34,7 @@ func (txs *txStore) Abort(tx string) error {
 		delete(txs.transactions, tx)
 		return nil
 	}
-	return txUnknown
+	return ErrTxUnknown
 }
 
 // Commit causes all requests that have been queued for the transaction
@@ -52,7 +52,7 @@ func (txs *txStore) Commit(tx string, commitFunc func(f *frame.Frame) error) err
 		delete(txs.transactions, tx)
 		return nil
 	}
-	return txUnknown
+	return ErrTxUnknown
 }
 
 func (txs *txStore) Add(tx string, f *frame.Frame) error {
@@ -61,5 +61,5 @@ func (txs *txStore) Add(tx string, f *frame.Frame) error {
 		list.PushBack(f)
 		return nil
 	}
-	return txUnknown
+	return ErrTxUnknown
 }

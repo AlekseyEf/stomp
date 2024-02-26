@@ -429,14 +429,14 @@ func connecting(c *Conn, f *frame.Frame) error {
 	case frame.CONNECT, frame.STOMP:
 		return c.handleConnect(f)
 	}
-	return notConnected
+	return ErrNotConnected
 }
 
 // State function for after connect frame received.
 func connected(c *Conn, f *frame.Frame) error {
 	switch f.Command {
 	case frame.CONNECT, frame.STOMP:
-		return unexpectedCommand
+		return ErrUnexpectedCommand
 	case frame.DISCONNECT:
 		return c.handleDisconnect(f)
 	case frame.BEGIN:
@@ -457,9 +457,9 @@ func connected(c *Conn, f *frame.Frame) error {
 		return c.handleNack(f)
 	case frame.MESSAGE, frame.RECEIPT, frame.ERROR:
 		// should only be sent by the server, should not come from the client
-		return unexpectedCommand
+		return ErrUnexpectedCommand
 	}
-	return unknownCommand
+	return ErrUnknownCommand
 }
 
 func (c *Conn) handleConnect(f *frame.Frame) error {
@@ -468,7 +468,7 @@ func (c *Conn) handleConnect(f *frame.Frame) error {
 	if _, ok := f.Header.Contains(frame.Receipt); ok {
 		// CONNNECT and STOMP frames are not allowed to have
 		// a receipt header.
-		return receiptInConnect
+		return ErrReceiptInConnect
 	}
 
 	// if either of these fields are absent, pass nil to the
@@ -479,7 +479,7 @@ func (c *Conn) handleConnect(f *frame.Frame) error {
 		// sleep to slow down a rogue client a little bit
 		c.log.Error("authentication failed")
 		time.Sleep(time.Second)
-		return authenticationFailed
+		return ErrAuthenticationFailed
 	}
 
 	c.version, err = DetermineVersion(f)
@@ -493,7 +493,7 @@ func (c *Conn) handleConnect(f *frame.Frame) error {
 		// don't want to handle V1.0 at the moment
 		// TODO: get working for V1.0
 		c.log.Errorf("unsupported version %s", c.version)
-		return unsupportedVersion
+		return ErrUnsupportedVersion
 	}
 
 	cx, cy, err := GetHeartBeat(f)
@@ -626,7 +626,7 @@ func (c *Conn) handleSubscribe(f *frame.Frame) error {
 
 	sub, ok := c.subs[id]
 	if ok {
-		return subscriptionExists
+		return ErrSubscriptionExists
 	}
 
 	sub = NewSubscription(c, dest, id, ack)
@@ -645,7 +645,7 @@ func (c *Conn) handleUnsubscribe(f *frame.Frame) error {
 
 	sub, ok := c.subs[id]
 	if !ok {
-		return subscriptionNotFound
+		return ErrSubscriptionNotFound
 	}
 
 	// remove the subscription
