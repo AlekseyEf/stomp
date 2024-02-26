@@ -84,7 +84,7 @@ func ExampleConn_Subscribe_1() error {
 		return err
 	}
 
-	sub, err := conn.Subscribe("/queue/test-2", stomp.AckClient)
+	sub, err := conn.Subscribe("/queue/test-2", frame.AckClient)
 	if err != nil {
 		return err
 	}
@@ -116,13 +116,13 @@ func ExampleConn_Subscribe_1() error {
 // Example of creating subscriptions with various options.
 func ExampleConn_Subscribe_2(c *stomp.Conn) error {
 	// Subscribe to queue with automatic acknowledgement
-	sub1, err := c.Subscribe("/queue/test-1", stomp.AckAuto)
+	sub1, err := c.Subscribe("/queue/test-1", frame.AckAuto)
 	if err != nil {
 		return err
 	}
 
 	// Subscribe to queue with client acknowledgement and a custom header value
-	sub2, err := c.Subscribe("/queue/test-2", stomp.AckClient,
+	sub2, err := c.Subscribe("/queue/test-2", frame.AckClient,
 		stomp.SubscribeOpt.Header("x-custom-header", "some-value"))
 	if err != nil {
 		return err
@@ -140,7 +140,7 @@ func ExampleTransaction() error {
 	}
 	defer conn.Disconnect()
 
-	sub, err := conn.Subscribe("/queue/test-2", stomp.AckClient)
+	sub, err := conn.Subscribe("/queue/test-2", frame.AckClient)
 	if err != nil {
 		return err
 	}

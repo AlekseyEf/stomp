@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/go-stomp/stomp/v3/frame"
 	"net"
 	"runtime"
 	"testing"
@@ -46,7 +47,6 @@ func (s *ServerSuite) TestConnectAndDisconnect(c *C) {
 	conn.Close()
 }
 
-
 func (s *ServerSuite) TestHeartBeatingTolerance(c *C) {
 	// Heart beat should not close connection exactly after not receiving message after cx
 	//  it should add a pretty decent amount of time to counter network delay of other timing issues
@@ -65,8 +65,8 @@ func (s *ServerSuite) TestHeartBeatingTolerance(c *C) {
 	c.Assert(err, IsNil)
 	defer conn.Close()
 
-	client, err := stomp.Connect(conn, 
-		stomp.ConnOpt.HeartBeat(5 * time.Millisecond, 5 * time.Millisecond),
+	client, err := stomp.Connect(conn,
+		stomp.ConnOpt.HeartBeat(5*time.Millisecond, 5*time.Millisecond),
 	)
 	c.Assert(err, IsNil)
 	defer client.Disconnect()
@@ -154,7 +154,7 @@ func runReceiver(c *C, ch chan bool, count int, destination, addr string, starte
 	client, err := stomp.Connect(conn)
 	c.Assert(err, IsNil)
 
-	sub, err := client.Subscribe(destination, stomp.AckAuto)
+	sub, err := client.Subscribe(destination, frame.AckAuto)
 	c.Assert(err, IsNil)
 	c.Assert(sub, NotNil)
 

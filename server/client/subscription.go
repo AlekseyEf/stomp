@@ -8,13 +8,13 @@ type Subscription struct {
 	conn    *Conn
 	dest    string
 	id      string            // client's subscription id
-	ack     string            // auto, client, client-individual
+	ack     frame.AckMode     // auto, client, client-individual
 	msgId   uint64            // message-id (or ack) for acknowledgement
 	subList *SubscriptionList // am I in a list
 	frame   *frame.Frame      // message allocated to subscription
 }
 
-func NewSubscription(c *Conn, dest string, id string, ack string) *Subscription {
+func NewSubscription(c *Conn, dest string, id string, ack frame.AckMode) *Subscription {
 	return &Subscription{
 		conn: c,
 		dest: dest,
@@ -27,7 +27,7 @@ func (s *Subscription) Destination() string {
 	return s.dest
 }
 
-func (s *Subscription) Ack() string {
+func (s *Subscription) Ack() frame.AckMode {
 	return s.ack
 }
 

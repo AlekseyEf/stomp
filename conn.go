@@ -639,7 +639,7 @@ func (c *Conn) sendFrame(f *frame.Frame) error {
 // The subscription has a destination, and messages sent to that destination
 // will be received by this subscription. A subscription has a channel
 // on which the calling program can receive messages.
-func (c *Conn) Subscribe(destination string, ack AckMode, opts ...func(*frame.Frame) error) (*Subscription, error) {
+func (c *Conn) Subscribe(destination string, ack frame.AckMode, opts ...func(*frame.Frame) error) (*Subscription, error) {
 	c.closeMutex.Lock()
 	defer c.closeMutex.Unlock()
 	if c.closed {
@@ -759,7 +759,7 @@ func (c *Conn) createAckNackFrame(msg *Message, ack bool) (*frame.Frame, error) 
 		return nil, ErrNotReceivedMessage
 	}
 
-	if msg.Subscription.AckMode() == AckAuto {
+	if msg.Subscription.AckMode() == frame.AckAuto {
 		if ack {
 			// not much point sending an ACK to an auto subscription
 			return nil, nil

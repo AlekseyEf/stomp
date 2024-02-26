@@ -24,7 +24,7 @@ type Subscription struct {
 	replyToSet  bool
 	destination string
 	conn        *Conn
-	ackMode     AckMode
+	ackMode     frame.AckMode
 	state       int32
 	closeMutex  *sync.Mutex
 	closeCond   *sync.Cond
@@ -47,7 +47,7 @@ func (s *Subscription) Destination() string {
 
 // AckMode returns the Acknowledgement mode specified when the
 // subscription was created.
-func (s *Subscription) AckMode() AckMode {
+func (s *Subscription) AckMode() frame.AckMode {
 	return s.ackMode
 }
 

@@ -619,9 +619,9 @@ func (c *Conn) handleSubscribe(f *frame.Frame) error {
 		return MissingHeaderError(frame.Destination)
 	}
 
-	ack, ok := f.Header.Contains(frame.Ack)
-	if !ok {
-		ack = frame.AckAuto
+	var ack = frame.AckAuto
+	if val, ok := f.Header.Contains(frame.Ack); ok {
+		ack = frame.ParseAckMode(val)
 	}
 
 	sub, ok := c.subs[id]

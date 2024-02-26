@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/go-stomp/stomp/v3/frame"
 	"os"
 
 	"github.com/go-stomp/stomp/v3"
@@ -77,7 +78,7 @@ func recvMessages(subscribed chan bool) {
 		return
 	}
 
-	sub, err := conn.Subscribe(*queueName, stomp.AckAuto)
+	sub, err := conn.Subscribe(*queueName, frame.AckAuto)
 	if err != nil {
 		println("cannot subscribe to", *queueName, err.Error())
 		return

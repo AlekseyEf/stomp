@@ -1,6 +1,7 @@
 package client
 
 import (
+	"github.com/go-stomp/stomp/v3/frame"
 	. "gopkg.in/check.v1"
 )
 
@@ -9,9 +10,9 @@ type SubscriptionListSuite struct{}
 var _ = Suite(&SubscriptionListSuite{})
 
 func (s *SubscriptionListSuite) TestAddAndGet(c *C) {
-	sub1 := NewSubscription(nil, "/dest", "1", "client")
-	sub2 := NewSubscription(nil, "/dest", "2", "client")
-	sub3 := NewSubscription(nil, "/dest", "3", "client")
+	sub1 := NewSubscription(nil, "/dest", "1", frame.AckClient)
+	sub2 := NewSubscription(nil, "/dest", "2", frame.AckClient)
+	sub3 := NewSubscription(nil, "/dest", "3", frame.AckClient)
 
 	sl := NewSubscriptionList()
 	sl.Add(sub1)
@@ -31,9 +32,9 @@ func (s *SubscriptionListSuite) TestAddAndGet(c *C) {
 }
 
 func (s *SubscriptionListSuite) TestAddAndRemove(c *C) {
-	sub1 := NewSubscription(nil, "/dest", "1", "client")
-	sub2 := NewSubscription(nil, "/dest", "2", "client")
-	sub3 := NewSubscription(nil, "/dest", "3", "client")
+	sub1 := NewSubscription(nil, "/dest", "1", frame.AckClient)
+	sub2 := NewSubscription(nil, "/dest", "2", frame.AckClient)
+	sub3 := NewSubscription(nil, "/dest", "3", frame.AckClient)
 
 	sl := NewSubscriptionList()
 	sl.Add(sub1)
@@ -51,10 +52,10 @@ func (s *SubscriptionListSuite) TestAddAndRemove(c *C) {
 }
 
 func (s *SubscriptionListSuite) TestAck(c *C) {
-	sub1 := &Subscription{dest: "/dest1", id: "1", ack: "client", msgId: 101}
-	sub2 := &Subscription{dest: "/dest3", id: "2", ack: "client-individual", msgId: 102}
-	sub3 := &Subscription{dest: "/dest4", id: "3", ack: "client", msgId: 103}
-	sub4 := &Subscription{dest: "/dest4", id: "4", ack: "client", msgId: 104}
+	sub1 := &Subscription{dest: "/dest1", id: "1", ack: frame.AckClient, msgId: 101}
+	sub2 := &Subscription{dest: "/dest3", id: "2", ack: frame.AckClientIndividual, msgId: 102}
+	sub3 := &Subscription{dest: "/dest4", id: "3", ack: frame.AckClient, msgId: 103}
+	sub4 := &Subscription{dest: "/dest4", id: "4", ack: frame.AckClient, msgId: 104}
 
 	sl := NewSubscriptionList()
 	sl.Add(sub1)
@@ -82,10 +83,10 @@ func (s *SubscriptionListSuite) TestAck(c *C) {
 }
 
 func (s *SubscriptionListSuite) TestNack(c *C) {
-	sub1 := &Subscription{dest: "/dest1", id: "1", ack: "client", msgId: 101}
-	sub2 := &Subscription{dest: "/dest3", id: "2", ack: "client-individual", msgId: 102}
-	sub3 := &Subscription{dest: "/dest4", id: "3", ack: "client", msgId: 103}
-	sub4 := &Subscription{dest: "/dest4", id: "4", ack: "client", msgId: 104}
+	sub1 := &Subscription{dest: "/dest1", id: "1", ack: frame.AckClient, msgId: 101}
+	sub2 := &Subscription{dest: "/dest3", id: "2", ack: frame.AckClientIndividual, msgId: 102}
+	sub3 := &Subscription{dest: "/dest4", id: "3", ack: frame.AckClient, msgId: 103}
+	sub4 := &Subscription{dest: "/dest4", id: "4", ack: frame.AckClient, msgId: 104}
 
 	sl := NewSubscriptionList()
 	sl.Add(sub1)
