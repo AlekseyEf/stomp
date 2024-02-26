@@ -4,10 +4,10 @@ import (
 	"time"
 )
 
-// Convert a time.Duration to milliseconds in an integer.
+// AsMilliseconds Convert a time.Duration to milliseconds in an integer.
 // Returns the duration in milliseconds, or max if the
 // duration is greater than max milliseconds.
-func asMilliseconds(d time.Duration, max int) int {
+func AsMilliseconds(d time.Duration, max int) int {
 	if max < 0 {
 		max = 0
 	}

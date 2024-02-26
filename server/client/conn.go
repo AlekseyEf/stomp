@@ -153,7 +153,7 @@ func (c *Conn) readLoop() {
 		// read timeout means no synchronization is necessary.
 		if expectingConnect {
 			// Expecting a CONNECT or STOMP command, get the heart-beat
-			cx, _, err := getHeartBeat(f)
+			cx, _, err := GetHeartBeat(f)
 
 			// Ignore the error condition and treat as no read timeout.
 			// The processing loop will handle the error again and
@@ -162,7 +162,7 @@ func (c *Conn) readLoop() {
 				// Minimum value as per server config. If the client
 				// has requested shorter periods than this value, the
 				// server will insist on the longer time period.
-				min := asMilliseconds(c.config.HeartBeat(), maxHeartBeat)
+				min := AsMilliseconds(c.config.HeartBeat(), maxHeartBeat)
 
 				// apply a minimum heartbeat
 				if cx > 0 && cx < min {
@@ -482,7 +482,7 @@ func (c *Conn) handleConnect(f *frame.Frame) error {
 		return authenticationFailed
 	}
 
-	c.version, err = determineVersion(f)
+	c.version, err = DetermineVersion(f)
 	if err != nil {
 		c.log.Error("protocol version negotiation failed")
 		return err
@@ -496,7 +496,7 @@ func (c *Conn) handleConnect(f *frame.Frame) error {
 		return unsupportedVersion
 	}
 
-	cx, cy, err := getHeartBeat(f)
+	cx, cy, err := GetHeartBeat(f)
 	if err != nil {
 		c.log.Error("invalid heart-beat")
 		return err
@@ -505,7 +505,7 @@ func (c *Conn) handleConnect(f *frame.Frame) error {
 	// Minimum value as per server config. If the client
 	// has requested shorter periods than this value, the
 	// server will insist on the longer time period.
-	min := asMilliseconds(c.config.HeartBeat(), maxHeartBeat)
+	min := AsMilliseconds(c.config.HeartBeat(), maxHeartBeat)
 
 	// apply a minimum heartbeat
 	if cx > 0 && cx < min {
