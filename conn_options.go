@@ -75,8 +75,8 @@ func (co *connOptions) NewFrame() (*frame.Frame, error) {
 
 	// heart-beat
 	{
-		send := co.WriteTimeout / time.Millisecond
-		recv := co.ReadTimeout / time.Millisecond
+		send := co.WriteTimeout.Milliseconds()
+		recv := co.ReadTimeout.Milliseconds()
 		f.Header.Set(frame.HeartBeat, fmt.Sprintf("%d,%d", send, recv))
 	}
 
